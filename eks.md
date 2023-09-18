@@ -4,22 +4,25 @@
 # EKS
 
 ## create cluster
+```
+aws eks create-cluster --name presentation-eks --kubernetes-version 1.27 \
+--role-arn arn:aws:iam::920300236283:role/App_EKS_Role \
+--resources-vpc-config subnetIds=subnet-064934812834958f2,subnet-043d9e03f26d127ed,subnet-040eba93b64076e3d,securityGroupIds=sg-0cde71866483edcab,endpointPublicAccess=false,endpointPrivateAccess=true \
+--logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
+```
 
-not working on sanofi used manual creation with App_EKS_Role
-```
-eksctl create cluster \
---name presentation-eks \
---region eu-west-1 \
---version 1.27 \
---authenticator-role-arn arn:aws:iam::920300236283:role/App_EKS_Role \
---vpc-private-subnets subnet-064934812834958f2,subnet-043d9e03f26d127ed,subnet-040eba93b64076e3d \
---node-security-groups sg-0cde71866483edcab \
---ssh-access \
---ssh-public-key "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICcjJobjB0/5AGreNJ1+gXkeaGfB6eBFztMrDgiXcttM Florent.sithimolada-ext@sanofi.com key2" \
---without-nodegroup
-```
 
 ## create node
+
+## create worker node role
+https://stackoverflow.com/questions/71087365/aws-eks-cluster-nodes-creation-iam-role
+trusted entity / choose AWS service / EC2
+Policies:
+- AmazonEKSWorkerNodePolicy
+- AmazonEC2ContainerRegistryReadOnly
+- AmazonEKS_CNI_Policy
+Name : App_AmazonEKSNodeRole
+
 eksctl create nodegroup \
   --cluster presentation-eks \
   --region eu-west-1 \
@@ -148,3 +151,22 @@ kubectl delete deployment kubernetes-bootcamp -n eks-sample-app
 ### delete eks cluster
 aws eks delete-fargate-profile --region eu-west-1 --cluster-name presentation-eks --fargate-profile-name fp-default
 eksctl delete cluster --name presentation-eks --region eu-west-3
+
+
+# not working
+
+not working on sanofi used manual creation with App_EKS_Role
+```
+eksctl create cluster \
+--name presentation-eks \
+--region eu-west-1 \
+--version 1.27 \
+--shared-iam-role arn:aws:iam::920300236283:role/App_EKS_Role \
+--vpc-private-subnets subnet-064934812834958f2,subnet-043d9e03f26d127ed,subnet-040eba93b64076e3d \
+--node-security-groups sg-0cde71866483edcab \
+--ssh-access \
+--ssh-public-key "fsa"
+```
+--without-nodegroup
+--shared-iam-role
+--authenticator-role-arn
