@@ -46,394 +46,285 @@ The last comment block of each slide will be treated as slide notes. It will be 
 -->
 
 ---
-transition: fade-out
----
-
-# What is Slidev?
-
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
-
-<br>
-<br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
-<!--
-Here is another comment.
--->
-
----
 layout: default
+transition: fade-out
 ---
 
 # Table of contents
 
-```html
-<Toc minDepth="1" maxDepth="1"></Toc>
-```
-
 <Toc maxDepth="1"></Toc>
 
 ---
-transition: slide-up
+transition: slide-left
+---
+
+# What is Kubernetes (K8s)?
+
+- Providing automated container orchestration, Kubernetes improves your reliability and reduces the time and resources attributed to daily operations.
+- Originally developed at Google and released as open source in 2014. Now it's maintained by the CNCF (Cloud Native Computing Foundation).
+- Name comes from acient greek word kubernḗtēs (*navigator* or *guide*)
+- Deploy, scale & manage containerized workloads anywhere
+
+Features that Kubernetes provides:
+
+- Infrastructure abstraction
+- Automated operations
+- Service health monitoring
+- Made for microservice applications
+
+
+---
+transition: slide-left
 
 level: 2
+layout: two-cols
 ---
 
-# Navigation
+# How does Kubernetes work?
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
 
-### Keyboard Shortcuts
-
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
 <img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
+  src="https://www.cncf.io/wp-content/uploads/2020/09/Kubernetes-architecture-diagram-1-1-1024x698.png"
 />
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
 
----
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
----
-
-# Code
-
-Use code snippets and get the highlighting directly![^1]
-
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
-```
-
-<arrow v-click="[3, 4]" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
+::right::
 
 <style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
+#k8s-architecture  {
+  /* margin-left: 10px; */
+  font-size: 1rem;
 }
 </style>
 
----
+<div id="k8s-architecture">
 
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
-
----
-class: px-20
----
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
+- Kubernetes consists of a network of *nodes*
+- Control Plane (*master node*): K8s management
+  - API server: provides internal & external APIs via HTTP (JSON)
+  - Scheduler: Assigns & schedules a certain unscheduled pod to a node
+  - Controller: Loop process that is responsible for achieving the desired state of the cluster. The controller manager manages a set of controllers
+  - etcd: Lightweight distributed key-value store to keep the configuration data of the cluster
+- Nodes (*worker node*): Run workloads
+  - kubelet: Observing and managing the running state of each node
+  - kube-proxy: Network proxy and load balancer to ensure communication between nodes, responsible for name resolving and routing
 
 </div>
 
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
+
 
 ---
-preload: false
+transition: slide-up
 ---
 
-# Animations
+# Building blocks
 
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
+Kubernetes infrastructures consist of single building blocks (resources) that are combined together to create a scalable, secure and resilient platform for application deployments.
 
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
+The whole kubernetes environment is described in a *declarative* manner. We define how the target state should look like, the process of reaching that state is the job of the kubernetes control plane.
+
+Usually, the kubernetes objects / resources are defined in *.yml* format, so they are easy to read, create and process for humans as well as computers.
+---
+transition: slide-up
+---
+
+## Namespace
+
+Grouping and managing different resources in namespaces helps to organize the cluster. It can be scoped by responsibilities, domains, teams or other strategies. If not specified otherwise, resources will be created in the *default* namespace. 
+
+```yml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+  labels:
+    name: development
+```
+---
+transition: slide-up
+---
+
+## Pods
+
+The smallest deployable units in K8s are pods. It contains/manages one or more containers running on the same node with shared storage and network resources. It resembles a 'logical host' (i.e. tightly coupled containers).
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+```
+---
+transition: slide-up
+---
+
+## Deployments
+
+Deployments describe a desired state, which the Deployment Controller uses in order to change the actual state to the desired state at a controlled rate. It provides features such as rolling updates, rollbacks, self-healing capabilities, etc. 
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+```
+---
+transition: slide-up
+---
+
+## Services
+
+A service can be used to expose an application running as one or more pods in your cluster. The services are assigned a stable IP address and a DNS name for communication in the cluster. It also provides load balancing among the pods of the same selector.
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+```
+---
+transition: slide-left
+---
+
+## Ingress
+
+Exposes HTTP & HTTPS routes from outside the cluster to services within the cluster. The routing behaviour can be configured and controlled by rules defined on the ingress resource.
+
+
+```yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx-example
+  rules:
+  - http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
 ```
 
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
+---
+transition: slide-left
 ---
 
-# LaTeX
+# Kubernetes API 
 
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
+You can interact with the kubernetes control plane via the exposed Kubernetes API.
 
-<br>
+<br/>
 
-Inline $\sqrt{3x-1}+(1+x)^2$
+You can either use the API directly via HTTPS requests, or you can use the *kubectl* command line tool. After authorization, `kubectl` is fairly simple to use with a clear syntax:
 
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
-
+```bash
+kubectl [command] [TYPE] [NAME] [flags]
+```
+---
+transition: slide-left
 ---
 
-# Diagrams
+# Kubernetes API - Examples
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-4 gap-5 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
+```bash
+kubectl get pods
 ```
+List all pods in current namespace
 
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
+```bash
+kubectl describe [NAME]
 ```
+Display the detailed state for one or more resources
 
-```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectivness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
+```bash
+kubectl exec POD [...]
 ```
+Execute a command against a container in a pod
 
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
+```bash
+kubectl logs POD [...]
 ```
+Display the logs for a container in a pod
 
-</div>
+```bash
+kubectl create -f FILENAME
+```
+Creates a kubernetes resource from a file or stdin
 
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
+```bash
+kubectl apply -f FILENAME
+```
+Apply a configuration change to a resource from a file or stdin
 
 ---
-src: ./pages/multiple-entries.md
-hide: false
+transition: slide-left
 ---
+
+# EKS
+
+Elastic Kubernetes Service (EKS) is the managed Kubernetes service provided by AWS. It automatically manages the availability & scalability of the Kubernetes control plane nodes, storing cluster data etc. 
+
+<br/>
+
+A big advantage of EKS compared to self-managed Kubernetes is the simple *integration with other AWS services*, such as networking and security (VPC, IAM, EC2, EBS, ...)
+
+## Approaches
+
+EKS provides two different approaches to compute resources:
+
+- **AWS EC2**: Cluster is self-managed, nodes are provided by user as EC2 instances
+- **AWS Fargate**: Serverless approach, infrastructre is hidden/abstracted away from the user. Fargate dynamically allocates resources.
+
+```bash
+eksctl create cluster --name my-cluster --region region-code --fargate
+```
+---
+transition: slide-left
+---
+
+# Sources 
+
+- https://kubernetes.io/docs/reference
+- https://www.cncf.io/blog/2019/08/19/how-kubernetes-works/
+- https://aws.amazon.com/eks/
 
 ---
 layout: center
 class: text-center
 ---
 
-# Learn More
+# Thank you
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+Questions?
