@@ -50,6 +50,13 @@ layout: default
 transition: fade-out
 ---
 
+<h1>Disclamer : This presentation is a Small view (Teaser) of possiblility of Kubernetes and EKS</h1>
+
+---
+layout: default
+transition: fade-out
+---
+
 # Table of contents
 
 <Toc maxDepth="1"></Toc>
@@ -75,7 +82,6 @@ Features that Kubernetes provides:
 
 ---
 transition: slide-left
-
 level: 2
 layout: two-cols
 ---
@@ -298,18 +304,120 @@ Elastic Kubernetes Service (EKS) is the managed Kubernetes service provided by A
 
 <br/>
 
-A big advantage of EKS compared to self-managed Kubernetes is the simple *integration with other AWS services*, such as networking and security (VPC, IAM, EC2, EBS, ...)
+A big advantage of EKS compared to self-managed Kubernetes is the simple *integration with other 
+AWS services*, such as networking and security (VPC, IAM, EC2, EBS, ...)
 
-## Approaches
+---
+transition: slide-left
+---
+
+## Break down fonctionality in the 6 Pillars of the AWS Well-Architected Framework
+TOTO remove this part if too had to make to eks functionality
+ 
+- 1 Operational Excellence : 
+  - Perform operations as code : yaml file
+  - Make frequent, small, reversible changes : k8s take care to update only the changed components
+  - Anticipate failure : make service redundent
+- 2 Security : 
+  - 
+- 3 Reliability :
+- 4 performance Efficiency :
+- 5 Cost Optimization :
+- 6 Sustainability :
+
+---
+transition: slide-left
+---
+
+
+## Node provisioning : 2 Approaches
 
 EKS provides two different approaches to compute resources:
 
 - **AWS EC2**: Cluster is self-managed, nodes are provided by user as EC2 instances
-- **AWS Fargate**: Serverless approach, infrastructre is hidden/abstracted away from the user. Fargate dynamically allocates resources.
+```
+  eks_managed_node_groups = {
+    one = {
+      name = "node-group-1"
+      instance_types = ["t3.small"]
+      min_size     = 1
+      max_size     = 3
+      desired_size = 2
+    }
+```
+a.k.a "EKS Managed node group" : are impleted by AWS autoscaling group 
+
+- **AWS Fargate**: Serverless approach, infrastructre is hidden/abstracted away from the user. Fargate dynamically allocates resources. Possible Mapping 1 Pod = 1 fargate 
 
 ```bash
 eksctl create cluster --name my-cluster --region region-code --fargate
 ```
+Fargate Profile
+
+TODO describe selector : filter on service or pods labels and namespace to select which kind of node will be provitioned
+
+---
+transition: slide-left
+---
+
+# EC2 vs Fargate
+
+- EC2 is a bit cheaper
+- Daemonsets are not supported in EKS Fargate, so observability tools like Splunk and Datadog have to run in sidecar containers in each pod instead of a daemonset per node
+- In EKS Fargate each pod is run in its own VM and container images are not cached on nodes, making the startup times for pods 1-2 minutes long
+
+
+---
+transition: slide-left
+---
+
+# Security : IAM least priviledge principle
+IAM role can be define at
+- Managed node group level : like IAM Role for an EC2
+- Service level  with : IAM roles for K8s service accounts. Pods make signed call 
+
+---
+transition: slide-left
+---
+
+# Load balancing
+
+EKS plugable with :
+- ALB (Layer 7), url routing, TLS Termination, Certificate Manager, Client information IP, Proto
+- NLB (Layer 4), faster, cheaper
+
+---
+transition: slide-left
+---
+
+# Logging to Cloud Watch
+
+Application logs are kept in k8s cluster. 
+Push to Cloud watch required logging and metrics processor and forwarder : Fluent bit (recommended). Deployed as a Deamonset
+
+Deploy code at Node level for mutualisation
+
+
+---
+transition: slide-left
+---
+
+# Cost monitoring
+
+Amazon EKS supports Kubecost : Break down costs by namespace, deployment, service, and more across any major cloud provider or on-prem Kubernetes environment. Prometeus Graphana based
+<img
+  src="https://docs.aws.amazon.com/images/eks/latest/userguide/images/kubecost.png"
+/>
+
+
+Application logs are kept in k8s cluster. Push to Cloud watch required logging and metrics processor and forwarder : Fluent bit
+
+---
+transition: slide-left
+---
+
+# Demo : Terraform provisioning, EKS console overview, deployment/rollout, debuging, logging Fluentbit, load balancer deployment.
+
 ---
 transition: slide-left
 ---
@@ -319,6 +427,18 @@ transition: slide-left
 - https://kubernetes.io/docs/reference
 - https://www.cncf.io/blog/2019/08/19/how-kubernetes-works/
 - https://aws.amazon.com/eks/
+
+## 6 Pilar of Well-Architected Framework
+-  https://aws.amazon.com/blogs/apn/the-6-pillars-of-the-aws-well-architected-framework/
+## EKS Load balancing
+- https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
+## IAM Role at Pods level
+https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
+## EKS provisionning
+- https://developer.hashicorp.com/terraform/tutorials/kubernetes/eks
+## Logging to Cloudwatch with fluetbit
+- https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html
+- https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
 
 ---
 layout: center
