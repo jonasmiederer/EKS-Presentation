@@ -72,6 +72,8 @@ kubectl apply -f myapp/myapp-deployment-v1.yaml
   kubectl expose deployment/app2 --type="NodePort" --port 8082 --target-port=3000
 -->
 
+# new version rollout
+
 watch -n 1 kubectl get pods --namespace default --output=custom-columns="NAME:.metadata.name,IMAGE:.spec.containers[*].image"
 
 
@@ -79,13 +81,6 @@ kubectl apply -f myapp/myapp-deployment-v2.yaml
 
 kubectl run curl --image=radial/busyboxplus:curl -i --tty --rm
 
-
-kubectl exec app2-b65d9698-7xr4g -it -- sh
-
-export POD_NAME="$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'| grep app2)"
+curl myapp:8082
 
 
-kubectl get services
-
-
-kubectl delete service app2

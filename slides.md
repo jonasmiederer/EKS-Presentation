@@ -298,6 +298,26 @@ Apply a configuration change to a resource from a file or stdin
 transition: slide-left
 ---
 
+# accessing service for development :
+
+- kubectl proxy : Let you perform http query to get cluster information an reach services direclty (with e.g curl)
+- kubectl port-forward : for tunneling specific ports
+- kubefwd : Create port forward for en entire namespace automatically and managing your local host file to resolve dns name
+---
+transition: slide-left
+---
+
+# Deployment scripting
+
+- kubctl command : Command line to create deployment, service etc...
+- kubctl yaml file : Deployment as code
+- helm chart : Templating system like terragrunt (for terraform)
+- terraform : Can run helm chart too !
+
+---
+transition: slide-left
+---
+
 # EKS
 
 Elastic Kubernetes Service (EKS) is the managed Kubernetes service provided by AWS. It automatically manages the availability & scalability of the Kubernetes control plane nodes, storing cluster data etc. 
@@ -345,7 +365,7 @@ EKS provides two different approaches to compute resources:
       desired_size = 2
     }
 ```
-a.k.a "EKS Managed node group" : are impleted by AWS autoscaling group 
+
 
 - **AWS Fargate**: Serverless approach, infrastructre is hidden/abstracted away from the user. Fargate dynamically allocates resources. Possible Mapping 1 Pod = 1 fargate 
 
@@ -354,7 +374,7 @@ eksctl create cluster --name my-cluster --region region-code --fargate
 ```
 Fargate Profile
 
-TODO describe selector : filter on service or pods labels and namespace to select which kind of node will be provitioned
+Selector : defined at node group and fargate profile level. They match service or pod's labels and namespace to determine in which kind of node nee to be provisioned
 
 ---
 transition: slide-left
@@ -362,16 +382,25 @@ transition: slide-left
 
 # EC2 vs Fargate
 
-- EC2 is a bit cheaper
-- Daemonsets are not supported in EKS Fargate, so observability tools like Splunk and Datadog have to run in sidecar containers in each pod instead of a daemonset per node
-- In EKS Fargate each pod is run in its own VM and container images are not cached on nodes, making the startup times for pods 1-2 minutes long
+- EC2++ : EC2 is a bit cheaper
+- EC2++ : In EKS Fargate each pod is run in its own VM and container images are not cached on nodes, making the startup times for pods 1-2 minutes long
+- Fargate-- : Daemonsets are not supported in EKS Fargate, so observability tools like Splunk and Datadog have to run in sidecar containers in each pod instead of a daemonset per node
 
+---
+transition: slide-left
+---
+
+# Auto scaling
+
+- Kubernetes Cluster Autoscaler (SIG) : Stable and robust. Can only handle one kind of resources. 
+- Karpenter (AWS) : Cost optimisation in mind. Start any kind of EC2 instances. Always try to reorganize pods and nodes.
 
 ---
 transition: slide-left
 ---
 
 # Security : IAM least priviledge principle
+
 IAM role can be define at
 - Managed node group level : like IAM Role for an EC2
 - Service level  with : IAM roles for K8s service accounts. Pods make signed call 
@@ -397,7 +426,6 @@ Push to Cloud watch required logging and metrics processor and forwarder : Fluen
 
 Deploy code at Node level for mutualisation
 
-
 ---
 transition: slide-left
 ---
@@ -416,26 +444,74 @@ Application logs are kept in k8s cluster. Push to Cloud watch required logging a
 transition: slide-left
 ---
 
-# Demo : Terraform provisioning, EKS console overview, deployment/rollout, debuging, logging Fluentbit, load balancer deployment.
+# Demo : 
+
+- Terraform provisioning
+- EKS console overview
+- Logging with Fluentbit
+- Debuging
+- Deployment / rollout
 
 ---
 transition: slide-left
 ---
 
-# Sources 
+# feedback
+
+Cons:
+
+- complexity : tonnes of new concepts, need to link them to AWS concepts too.
+- many ways to perform the same action : aws cli eks, eksctl, terraform.
+- sanofi context : any eks iam  role creation script are working out of the box.
+
+Pros:
+
+- Deployment of pods is fast.
+- Accessing the pods and getting logs are easy
+- AWS provide a nice Web Console to browse easily
+- Services like fluenbit are deploy quickly
+
+
+---
+transition: slide-left
+---
+
+# TODO
+
+- Reverse engineer https://github.com/hashicorp/learn-terraform-provision-eks-cluster make role creation Sanofi compatible
+- Install Kubernetes Cluster Autoscaler (SIG)
+- Install ALB 
+
+---
+transition: slide-left
+---
+
+# Sources  k8s
 
 - https://kubernetes.io/docs/reference
 - https://www.cncf.io/blog/2019/08/19/how-kubernetes-works/
 - https://aws.amazon.com/eks/
 
-## 6 Pilar of Well-Architected Framework
+# 6 Pilar of Well-Architected Framework
 -  https://aws.amazon.com/blogs/apn/the-6-pillars-of-the-aws-well-architected-framework/
+
+---
+transition: slide-left
+---
+# Sources  EKS
+
+## Great and complete Tutorials
+- https://www.youtube.com/@AntonPutra
+
 ## EKS Load balancing
 - https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
+
 ## IAM Role at Pods level
 https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
+
 ## EKS provisionning
 - https://developer.hashicorp.com/terraform/tutorials/kubernetes/eks
+
 ## Logging to Cloudwatch with fluetbit
 - https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html
 - https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
