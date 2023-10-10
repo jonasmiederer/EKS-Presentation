@@ -13,12 +13,13 @@ drawings:
   persist: false
 transition: slide-left
 title: "EKS : Kubernetes on AWS"
+hideInToc: true
 ---
 
 
 <img src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20220306133735/Group-42.jpg" style="width:40%;display: block;margin-left: auto; margin-right: auto;border-radius: 25px;"/>
 
-2023/09/29 
+2023/10/13 
 
 Jonas Miederer
 
@@ -48,24 +49,40 @@ The last comment block of each slide will be treated as slide notes. It will be 
 ---
 layout: default
 transition: fade-out
+hideInToc: true
 ---
 
-<h1>Disclamer : This presentation is a Small view (Teaser) of possiblility of Kubernetes and EKS</h1>
+<h3>Disclaimer</h3>
+
+This presentation provides just a small glimpse (teaser) of the whole Kubernetes and EKS ecosystem.
 
 ---
 layout: default
 transition: fade-out
+hideInToc: true
 ---
 
 # Table of contents
 
-<Toc maxDepth="1"></Toc>
+<Toc maxDepth="2" columns="2"></Toc>
+
+---
+transition: slide-left
+title: Kubernetes
+level: 0
+layout: center
+class: text-center
+---
+
+# Kubernetes
+
+What is Kubernetes and how can we use it?
 
 ---
 transition: slide-left
 ---
 
-# What is Kubernetes (K8s)?
+## What is Kubernetes (K8s)?
 
 - Providing automated container orchestration, Kubernetes improves your reliability and reduces the time and resources attributed to daily operations.
 - Originally developed at Google and released as open source in 2014. Now it's maintained by the CNCF (Cloud Native Computing Foundation).
@@ -82,11 +99,10 @@ Features that Kubernetes provides:
 
 ---
 transition: slide-left
-level: 2
 layout: two-cols
 ---
 
-# How does Kubernetes work?
+## How does Kubernetes work?
 
 
 <img
@@ -122,7 +138,7 @@ layout: two-cols
 transition: slide-up
 ---
 
-# Building blocks
+## Building blocks
 
 Kubernetes infrastructures consist of single building blocks (resources) that are combined together to create a scalable, secure and resilient platform for application deployments.
 
@@ -133,7 +149,7 @@ Usually, the kubernetes objects / resources are defined in *.yml* format, so the
 transition: slide-up
 ---
 
-## Namespace
+### Namespace
 
 Grouping and managing different resources in namespaces helps to organize the cluster. It can be scoped by responsibilities, domains, teams or other strategies. If not specified otherwise, resources will be created in the *default* namespace. 
 
@@ -149,7 +165,7 @@ metadata:
 transition: slide-up
 ---
 
-## Pods
+### Pods
 
 The smallest deployable units in K8s are pods. It contains/manages one or more containers running on the same node with shared storage and network resources. It resembles a 'logical host' (i.e. tightly coupled containers).
 
@@ -169,7 +185,7 @@ spec:
 transition: slide-up
 ---
 
-## Deployments
+### Deployments
 
 Deployments describe a desired state, which the Deployment Controller uses in order to change the actual state to the desired state at a controlled rate. It provides features such as rolling updates, rollbacks, self-healing capabilities, etc. 
 
@@ -196,7 +212,7 @@ spec:
 transition: slide-up
 ---
 
-## Services
+### Services
 
 A service can be used to expose an application running as one or more pods in your cluster. The services are assigned a stable IP address and a DNS name for communication in the cluster. It also provides load balancing among the pods of the same selector.
 
@@ -217,7 +233,7 @@ spec:
 transition: slide-left
 ---
 
-## Ingress
+### Ingress
 
 Exposes HTTP & HTTPS routes from outside the cluster to services within the cluster. The routing behaviour can be configured and controlled by rules defined on the ingress resource.
 
@@ -244,10 +260,10 @@ spec:
 ```
 
 ---
-transition: slide-left
+transition: slide-up
 ---
 
-# Kubernetes API 
+## Kubernetes API 
 
 You can interact with the kubernetes control plane via the exposed Kubernetes API.
 
@@ -262,7 +278,7 @@ kubectl [command] [TYPE] [NAME] [flags]
 transition: slide-left
 ---
 
-# Kubernetes API - Examples
+### Kubernetes API - Examples
 
 ```bash
 kubectl get pods
@@ -298,27 +314,38 @@ Apply a configuration change to a resource from a file or stdin
 transition: slide-left
 ---
 
-# accessing service for development :
+## Cluster access
 
-- kubectl proxy : Let you perform http query to get cluster information an reach services direclty (with e.g curl)
-- kubectl port-forward : for tunneling specific ports
-- kubefwd : Create port forward for en entire namespace automatically and managing your local host file to resolve dns name
+- `kubectl proxy`: Starts a proxy to the K8s API server in order to communicate with the API for example via curl, wget, ...
+- `kubectl port-forward`: Tunnels specific local port to the port of a pod/service in the cluster 
+- `kubefwd`: Create port forwarding for en entire namespace automatically and managing your local host file to resolve DNS names
 ---
 transition: slide-left
 ---
 
-# Deployment scripting
+## Deployment scripting
 
-- kubctl command : Command line to create deployment, service etc...
-- kubctl yaml file : Deployment as code
-- helm chart : Templating system like terragrunt (for terraform)
-- terraform : Can run helm chart too !
+- kubctl command: Command line to create deployment, service etc...
+- kubctl yaml file: Deployment as code
+- Helm chart: Tool for templating, packaging & configuration of Kubernetes applicatations (similar to terragrunt for terraform) 
+- Terraform: Can manage Kubernetes resources and Helm charts as well
+
 
 ---
 transition: slide-left
+title: EKS
+layout: center
+class: text-center
 ---
 
 # EKS
+
+What is EKS and how can we use it?
+---
+transition: slide-left
+---
+
+## What is EKS
 
 Elastic Kubernetes Service (EKS) is the managed Kubernetes service provided by AWS. It automatically manages the availability & scalability of the Kubernetes control plane nodes, storing cluster data etc. 
 
@@ -331,26 +358,52 @@ AWS services*, such as networking and security (VPC, IAM, EC2, EBS, ...)
 transition: slide-left
 ---
 
-## Break down fonctionality in the 6 Pillars of the AWS Well-Architected Framework
-TOTO remove this part if too had to make to eks functionality
- 
-- 1 Operational Excellence : 
-  - Perform operations as code : yaml file
-  - Make frequent, small, reversible changes : k8s take care to update only the changed components
-  - Anticipate failure : make service redundent
-- 2 Security : 
-  - 
-- 3 Reliability :
-- 4 performance Efficiency :
-- 5 Cost Optimization :
-- 6 Sustainability :
+## EKS & K8s in the context of the AWS Well-Architected Framework
+
+- **Operational Excellence** 
+  - Perform operations as code: yaml files
+  - Make frequent, small, reversible changes: K8s takes care of updating only the changed components
+  - Anticipate failure: Make services redundant
+- **Security**
+  - Pod Security Admission (PSA) & Pod Security Standards (PPS): Define capabilities, privileges & configurations (SELinux, runAsUser, ...)
+  - Mount secrets (Secrets Manager) & parameters (Parameter Store) into EKS pods via AWS Secrets and Configuration Provider (ASCP)
+  - Access to the cluster using IAM principals is enabled by the AWS IAM Authenticator for Kubernetes, which runs on the Amazon EKS control plane. The authenticator gets its configuration information from the `aws-auth` ConfigMap
+
+---
+transition: slide-left
+---
+
+- **Reliability**
+  - EKS runs control plane across 3 AZ in an AWS Region. It automatically manages the availability and scalability of the Kubernetes API servers and the etcd cluster.
+  - Fargate handles provisioning and scaling of the data plane. With self-managed nodes the responsibility shifts to the user.
+  - Schedule replicas across nodes
+  - Use EC2 Auto Scaling Groups to create worker nodes
+
+- **Performance Efficiency**
+  - Optimize your container:  Right-size the container (CPU, Memory, Latency, ...) => Use CloudWatch Container Insights to set requests and limits in K8s
+  - Resource Management: Use Labels, Setting resource requests limits, Advanced Scheduling Techniques (Taints & Tolerations)
+  - Scalability Management: EKS Horizontal/Vertical Pod Autoscaler
+
+---
+transition: slide-left
+---
+
+- **Cost Optimization**
+  - Instance Tagging
+  - Use Kubecost
+  - Evaluate Compute / Networking / Storage Costs
+  - EC2 node sizing
+  - Cluster Autoscaler
+- **Sustainability**
+  - Utilization & scaling capabilities of K8s
+  - Choose sustainable AWS regions
 
 ---
 transition: slide-left
 ---
 
 
-## Node provisioning : 2 Approaches
+## Node provisioning
 
 EKS provides two different approaches to compute resources:
 
@@ -380,7 +433,7 @@ Selector : defined at node group and fargate profile level. They match service o
 transition: slide-left
 ---
 
-# EC2 vs Fargate
+## EC2 vs Fargate
 
 - EC2++ : EC2 is a bit cheaper
 - EC2++ : In EKS Fargate each pod is run in its own VM and container images are not cached on nodes, making the startup times for pods 1-2 minutes long
@@ -390,7 +443,7 @@ transition: slide-left
 transition: slide-left
 ---
 
-# Auto scaling
+## Auto scaling
 
 - Kubernetes Cluster Autoscaler (SIG) : Stable and robust. Can only handle one kind of resources. 
 - Karpenter (AWS) : Cost optimisation in mind. Start any kind of EC2 instances. Always try to reorganize pods and nodes.
@@ -399,7 +452,7 @@ transition: slide-left
 transition: slide-left
 ---
 
-# Security : IAM least priviledge principle
+## Security : IAM least priviledge principle
 
 IAM role can be define at
 - Managed node group level : like IAM Role for an EC2
@@ -409,7 +462,7 @@ IAM role can be define at
 transition: slide-left
 ---
 
-# Load balancing
+## Load balancing
 
 EKS plugable with :
 - ALB (Layer 7), url routing, TLS Termination, Certificate Manager, Client information IP, Proto
@@ -419,7 +472,7 @@ EKS plugable with :
 transition: slide-left
 ---
 
-# Logging to Cloud Watch
+## Logging to Cloud Watch
 
 Application logs are kept in k8s cluster. 
 Push to Cloud watch required logging and metrics processor and forwarder : Fluent bit (recommended). Deployed as a Deamonset
@@ -430,7 +483,7 @@ Deploy code at Node level for mutualisation
 transition: slide-left
 ---
 
-# Cost monitoring
+## Cost monitoring
 
 Amazon EKS supports Kubecost : Break down costs by namespace, deployment, service, and more across any major cloud provider or on-prem Kubernetes environment. Prometeus Graphana based
 <img
@@ -444,7 +497,7 @@ Application logs are kept in k8s cluster. Push to Cloud watch required logging a
 transition: slide-left
 ---
 
-# Demo : 
+# Demo
 
 - Terraform provisioning
 - EKS console overview
@@ -456,7 +509,7 @@ transition: slide-left
 transition: slide-left
 ---
 
-# feedback
+# Conclusion
 
 Cons:
 
@@ -485,36 +538,29 @@ transition: slide-left
 ---
 transition: slide-left
 ---
+# Sources
 
-# Sources  k8s
+**AWS**
+- The 6 Pillars of the AWS Well-Architected Framework: https://aws.amazon.com/blogs/apn/the-6-pillars-of-the-aws-well-architected-framework/
 
+**Kubernetes**
 - https://kubernetes.io/docs/reference
 - https://www.cncf.io/blog/2019/08/19/how-kubernetes-works/
 - https://aws.amazon.com/eks/
 
-# 6 Pilar of Well-Architected Framework
--  https://aws.amazon.com/blogs/apn/the-6-pillars-of-the-aws-well-architected-framework/
-
 ---
 transition: slide-left
 ---
-# Sources  EKS
 
-## Great and complete Tutorials
-- https://www.youtube.com/@AntonPutra
-
-## EKS Load balancing
-- https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
-
-## IAM Role at Pods level
-https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
-
-## EKS provisionning
-- https://developer.hashicorp.com/terraform/tutorials/kubernetes/eks
-
-## Logging to Cloudwatch with fluetbit
-- https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html
-- https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
+**EKS**
+- EKS Best Practices: https://aws.github.io/aws-eks-best-practices
+- Great and complete Tutorials: https://www.youtube.com/@AntonPutra
+- EKS Load balancing: https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
+- IAM Role at Pods level: https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
+- EKS provisionning: https://developer.hashicorp.com/terraform/tutorials/kubernetes/eks
+- Logging to Cloudwatch with fluetbit
+  - https://docs.aws.amazon.com/fr_fr/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html
+  - https://blog.getambassador.io/configuring-kubernetes-ingress-on-aws-dont-make-these-mistakes-1a602e430e0a
 
 ---
 layout: center
