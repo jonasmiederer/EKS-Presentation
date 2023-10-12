@@ -327,7 +327,7 @@ transition: slide-left
 
 - kubctl command: Command line to create deployment, service etc...
 - kubctl yaml file: Deployment as code
-- Helm chart: Tool for templating, packaging & configuration of Kubernetes applicatations (similar to terragrunt for terraform) 
+- Helm : Package manager for Kubernetes. Helm Chart is a like a .rpm or .deb file.
 - Terraform: Can manage Kubernetes resources and Helm charts as well
 
 
@@ -448,8 +448,6 @@ Amazon EKS supports Kubecost : Break down costs by namespace, deployment, servic
 />
 
 
-Application logs are kept in k8s cluster. Push to Cloud watch required logging and metrics processor and forwarder : Fluent bit
-
 ---
 transition: slide-left
 ---
@@ -459,8 +457,10 @@ transition: slide-left
 - Terraform provisioning
 - EKS console overview
 - Logging with Fluentbit
-- Debuging
+- Deploy, Test, Debug
 - Deployment / rollout
+
+
 
 ---
 transition: slide-left
@@ -488,9 +488,10 @@ transition: slide-left
 
 # TODO
 
+- Install Ingress ALB
 - Finish terraform update to make it Compatible with Sanofi IAM role creation process, 
 - Install Kubernetes Cluster Autoscaler (SIG)
-- Install ALB
+
 
 - give a try to kOps : EKS alternative that create production kubernetes cluster with provisioning cloud infrastructure on any provider (AWS GCE DigitalOcean (official), Hetzner OpenStack (Beta), Azure (alpha)
 

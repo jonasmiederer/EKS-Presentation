@@ -2,6 +2,9 @@ cd demo
 
 export AWS_ACCOUNT=361509912577
 export AWS_REGION=eu-west-1
+export ClusterName=education-eks-231012
+export TF_VAR_region=$AWS_REGION
+export TF_VAR_eks_cluster_name=$ClusterName
 
 # EKS Cluster creation
 
@@ -10,13 +13,9 @@ create cluster
 terraform plan --out my_plan
 terraform apply my_plan
 ```
-export ClusterName=education-eks-M70L6nwO
 
-aws eks --region $(terraform output -raw region) update-kubeconfig \
-    --name $(terraform output -raw cluster_name)
 
 # logging in cloudwatch
-
 
 create amazon-cloudwatch namespace
 ```
@@ -54,6 +53,30 @@ configmap of fluentby o redirect to cloudwatch
 kubectl apply -f aws-logging.yaml
 ```
 
+# deploy service
+kubectl apply -f echoserver.yaml
+
+# test service
+
+## using proxy
+kubectl proxy
+curl http://localhost:8001/api/v1/namespaces/default/services/http:echoserver:/proxy/ | jq
+
+## view logs
+kubectl get pods
+kubectl logs podname
+
+## debug from inside
+kubectl run curl --image=radial/busyboxplus:curl -i --tty --rm
+
+
+# new version rollout
+
+watch -n 1 kubectl get pods --namespace default --output=custom-columns="NAME:.metadata.name,IMAGE:.spec.containers[*].image"
+
+## rollback
+kubectl rollout history deployment/echoserver
+kubectl rollout undo deployment/echoserver --to-revision=2
 
 # Build HTTP App and publish to ECR
 
@@ -72,15 +95,16 @@ kubectl apply -f myapp/myapp-deployment-v1.yaml
   kubectl expose deployment/app2 --type="NodePort" --port 8082 --target-port=3000
 -->
 
-# new version rollout
-
-watch -n 1 kubectl get pods --namespace default --output=custom-columns="NAME:.metadata.name,IMAGE:.spec.containers[*].image"
-
-
 kubectl apply -f myapp/myapp-deployment-v2.yaml
 
-kubectl run curl --image=radial/busyboxplus:curl -i --tty --rm
+# ingress nginx install
+https://kubernetes.github.io/ingress-nginx/deploy/ 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
 
-curl myapp:8082
+# ingress haproxy
+https://haproxy-ingress.github.io/docs/getting-started/
 
-
+kubectl --namespace default create ingress echoserver \
+  --class=haproxy \
+  --rule="ip-10-0-14-232.eu-west-1.compute.internal/*=echoserver:8080,tls"
+kubectl --namespace default delete ingress echoserver
