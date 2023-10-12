@@ -365,38 +365,44 @@ transition: slide-left
   - Make frequent, small, reversible changes: K8s takes care of updating only the changed components
   - Anticipate failure: Make services redundant
 - **Security**
-  - Pod Security Admission (PSA) & Pod Security Standards (PPS): Define capabilities, privileges & configurations (SELinux, runAsUser, ...)
-  - Mount secrets (Secrets Manager) & parameters (Parameter Store) into EKS pods via AWS Secrets and Configuration Provider (ASCP)
-  - Access to the cluster using IAM principals is enabled by the AWS IAM Authenticator for Kubernetes, which runs on the Amazon EKS control plane. The authenticator gets its configuration information from the `aws-auth` ConfigMap
+  - Apply security at all layers : Pod Security Admission (PSA) & Pod Security Standards (PSS): Define capabilities, privileges & configurations (SELinux, runAsUser, ...)
+  - Keep people away from data : Mount secrets (Secrets Manager) & parameters (Parameter Store) into EKS pods via AWS Secrets and Configuration Provider (ASCP)
+  - Implement a strong identity foundation : Access to the cluster using IAM principals is enabled by the AWS IAM Authenticator for Kubernetes, which runs on the Amazon EKS control plane. The authenticator gets its configuration information from the `aws-auth` ConfigMap
+  - Enable traceability : EKS CloudWatch CloudTrail logs
 
 ---
 transition: slide-left
 ---
 
 - **Reliability**
-  - EKS runs control plane across 3 AZ in an AWS Region. It automatically manages the availability and scalability of the Kubernetes API servers and the etcd cluster.
-  - Fargate handles provisioning and scaling of the data plane. With self-managed nodes the responsibility shifts to the user.
-  - Schedule replicas across nodes
-  - Use EC2 Auto Scaling Groups to create worker nodes
+  - Automatically recover from failure : kubernetes basic
+  - Scale horizontally to increase aggregate workload availability : 
+    - EKS runs control plane across 3 AZ in an AWS Region. It automatically manages the availability and scalability of the Kubernetes API servers and the etcd cluster.
+    - Fargate handles provisioning and scaling of the data plane. With self-managed nodes the responsibility shifts to the user.
+    - Schedule replicas across nodes
+    - Use EC2 Auto Scaling Groups to create worker nodes
 
 - **Performance Efficiency**
-  - Optimize your container:  Right-size the container (CPU, Memory, Latency, ...) => Use CloudWatch Container Insights to set requests and limits in K8s
-  - Resource Management: Use Labels, Setting resource requests limits, Advanced Scheduling Techniques (Taints & Tolerations)
-  - Scalability Management: EKS Horizontal/Vertical Pod Autoscaler
+  - Democratize advanced technologies : use latest (cheaper) EC2 instances type and k8s will migrate pods to it with ease.
+  - Experiment more often : with K8s Canary deployment is easy
 
 ---
 transition: slide-left
 ---
 
 - **Cost Optimization**
-  - Instance Tagging
-  - Use Kubecost
-  - Evaluate Compute / Networking / Storage Costs
-  - EC2 node sizing
-  - Cluster Autoscaler
+  - Implement cloud financial management
+  - Analyze and attribute expenditure: 
+    - Instance Tagging
+    - Use Kubecost
+  - Fine tune performance vs cost 
+    - EC2 node sizing
+    - Evaluate Compute / Networking / Storage Costs
+    - Cluster Autoscaler
+
 - **Sustainability**
-  - Utilization & scaling capabilities of K8s
-  - Choose sustainable AWS regions
+  - Utilization & scaling capabilities of K8s : adapt provisioning to workload
+  - Choose sustainable AWS regions : co² footprint
 
 ---
 transition: slide-left
@@ -427,7 +433,7 @@ eksctl create cluster --name my-cluster --region region-code --fargate
 ```
 Fargate Profile
 
-Selector : defined at node group and fargate profile level. They match service or pod's labels and namespace to determine in which kind of node nee to be provisioned
+Selector : defined at node group and fargate profile level. They match service or pod's labels and namespace to determine in which type of node need to be provisioned
 
 ---
 transition: slide-left
@@ -435,9 +441,9 @@ transition: slide-left
 
 ## EC2 vs Fargate
 
-- EC2++ : EC2 is a bit cheaper
-- EC2++ : In EKS Fargate each pod is run in its own VM and container images are not cached on nodes, making the startup times for pods 1-2 minutes long
-- Fargate-- : Daemonsets are not supported in EKS Fargate, so observability tools like Splunk and Datadog have to run in sidecar containers in each pod instead of a daemonset per node
+- EC2++ : EC2 is a bit **cheaper**
+- EC2++ : In EKS Fargate each pod is run in its own VM and **container images are not cached on nodes**, making the startup times for pods 1-2 minutes long
+- Fargate-- : **Daemonsets are not supported in EKS Fargate**, so observability tools like Fluentbit, Splunk and Datadog have to **run in sidecar containers** in each pod instead of a daemonset per node
 
 ---
 transition: slide-left
@@ -531,9 +537,11 @@ transition: slide-left
 
 # TODO
 
-- Reverse engineer https://github.com/hashicorp/learn-terraform-provision-eks-cluster make role creation Sanofi compatible
+- Finish terraform update to make it Compatible with Sanofi IAM role creation process, 
 - Install Kubernetes Cluster Autoscaler (SIG)
-- Install ALB 
+- Install ALB
+
+- give a try to kOps : EKS alternative that create production kubernetes cluster with provisioning cloud infrastructure on any provider (AWS GCE DigitalOcean (official), Hetzner OpenStack (Beta), Azure (alpha)
 
 ---
 transition: slide-left
