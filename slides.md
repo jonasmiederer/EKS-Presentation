@@ -354,55 +354,6 @@ Elastic Kubernetes Service (EKS) is the managed Kubernetes service provided by A
 A big advantage of EKS compared to self-managed Kubernetes is the simple *integration with other 
 AWS services*, such as networking and security (VPC, IAM, EC2, EBS, ...)
 
----
-transition: slide-left
----
-
-## EKS & K8s in the context of the AWS Well-Architected Framework
-
-- **Operational Excellence** 
-  - Perform operations as code: yaml files
-  - Make frequent, small, reversible changes: K8s takes care of updating only the changed components
-  - Anticipate failure: Make services redundant
-- **Security**
-  - Apply security at all layers : Pod Security Admission (PSA) & Pod Security Standards (PSS): Define capabilities, privileges & configurations (SELinux, runAsUser, ...)
-  - Keep people away from data : Mount secrets (Secrets Manager) & parameters (Parameter Store) into EKS pods via AWS Secrets and Configuration Provider (ASCP)
-  - Implement a strong identity foundation : Access to the cluster using IAM principals is enabled by the AWS IAM Authenticator for Kubernetes, which runs on the Amazon EKS control plane. The authenticator gets its configuration information from the `aws-auth` ConfigMap
-  - Enable traceability : EKS CloudWatch CloudTrail logs
-
----
-transition: slide-left
----
-
-- **Reliability**
-  - Automatically recover from failure : kubernetes basic
-  - Scale horizontally to increase aggregate workload availability : 
-    - EKS runs control plane across 3 AZ in an AWS Region. It automatically manages the availability and scalability of the Kubernetes API servers and the etcd cluster.
-    - Fargate handles provisioning and scaling of the data plane. With self-managed nodes the responsibility shifts to the user.
-    - Schedule replicas across nodes
-    - Use EC2 Auto Scaling Groups to create worker nodes
-
-- **Performance Efficiency**
-  - Democratize advanced technologies : use latest (cheaper) EC2 instances type and k8s will migrate pods to it with ease.
-  - Experiment more often : with K8s Canary deployment is easy
-
----
-transition: slide-left
----
-
-- **Cost Optimization**
-  - Implement cloud financial management
-  - Analyze and attribute expenditure: 
-    - Instance Tagging
-    - Use Kubecost
-  - Fine tune performance vs cost 
-    - EC2 node sizing
-    - Evaluate Compute / Networking / Storage Costs
-    - Cluster Autoscaler
-
-- **Sustainability**
-  - Utilization & scaling capabilities of K8s : adapt provisioning to workload
-  - Choose sustainable AWS regions : co² footprint
 
 ---
 transition: slide-left
@@ -542,6 +493,57 @@ transition: slide-left
 - Install ALB
 
 - give a try to kOps : EKS alternative that create production kubernetes cluster with provisioning cloud infrastructure on any provider (AWS GCE DigitalOcean (official), Hetzner OpenStack (Beta), Azure (alpha)
+
+---
+transition: slide-left
+---
+
+## EKS & K8s in the context of the AWS Well-Architected Framework
+
+- **Operational Excellence** 
+  - Perform operations as code: yaml files
+  - Make frequent, small, reversible changes: K8s takes care of updating only the changed components
+  - Anticipate failure: Make services redundant
+- **Security**
+  - Apply security at all layers : Pod Security Admission (PSA) & Pod Security Standards (PSS): Define capabilities, privileges & configurations (SELinux, runAsUser, ...)
+  - Keep people away from data : Mount secrets (Secrets Manager) & parameters (Parameter Store) into EKS pods via AWS Secrets and Configuration Provider (ASCP)
+  - Implement a strong identity foundation : Access to the cluster using IAM principals is enabled by the AWS IAM Authenticator for Kubernetes, which runs on the Amazon EKS control plane. The authenticator gets its configuration information from the `aws-auth` ConfigMap
+  - Enable traceability : EKS CloudWatch CloudTrail logs
+
+---
+transition: slide-left
+---
+
+- **Reliability**
+  - Automatically recover from failure : kubernetes basic
+  - Scale horizontally to increase aggregate workload availability : 
+    - EKS runs control plane across 3 AZ in an AWS Region. It automatically manages the availability and scalability of the Kubernetes API servers and the etcd cluster.
+    - Fargate handles provisioning and scaling of the data plane. With self-managed nodes the responsibility shifts to the user.
+    - Schedule replicas across nodes
+    - Use EC2 Auto Scaling Groups to create worker nodes
+
+- **Performance Efficiency**
+  - Democratize advanced technologies : use latest (cheaper) EC2 instances type and k8s will migrate pods to it with ease.
+  - Experiment more often : with K8s Canary deployment is easy
+
+---
+transition: slide-left
+---
+
+- **Cost Optimization**
+  - Implement cloud financial management
+  - Analyze and attribute expenditure: 
+    - Instance Tagging
+    - Use Kubecost
+  - Fine tune performance vs cost 
+    - EC2 node sizing
+    - Evaluate Compute / Networking / Storage Costs
+    - Cluster Autoscaler
+
+- **Sustainability**
+  - Utilization & scaling capabilities of K8s : adapt provisioning to workload
+  - Choose sustainable AWS regions : co² footprint
+
 
 ---
 transition: slide-left
